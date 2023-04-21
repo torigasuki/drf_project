@@ -27,7 +27,8 @@ class ArticleCreateTest(APITestCase):
         cls.user = User.objects.create_user('john','johnpassword')
 
     def setUp(self):
-        self.access_token = self.client.post(reverse('token_obtain_pair'), self.user_data).data['access']
+        self.access_token = self.client.post(
+            reverse('token_obtain_pair'), self.user_data).data['access']
 
     # def setUp(self):
     #     self.user_data = {'email': 'john', 'password': 'johnpassword'}

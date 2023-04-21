@@ -31,21 +31,22 @@ from users.models import User
 
 
 
-# class LoginUserTest(APITestCase):
-#     def setUp(self):
-#         self.data = {'email': 'john', 'password': 'johnpassword'}
-#         self.user = User.objects.create_user('john','johnpassword')
+class LoginUserTest(APITestCase):
+    def setUp(self):
+        self.data = {'email': 'john', 'password': 'johnpassword'}
+        self.user = User.objects.create_user('john','johnpassword')
 
-#     def test_login(self):
-#         response = self.client.post(reverse('token_obtain_pair'), self.data)
-#         self.assertEqual(response.status_code, 200)
+    def test_login(self):
+        response = self.client.post(reverse('token_obtain_pair'), self.data)
+        self.assertEqual(response.status_code, 200)
 
-#     def test_get_user_data(self):
-#         access_teken = self.client.post(reverse('token_obtain_pair'), self.data).data['access']
-#         response = self.client.get(
-#             path=reverse('user_view'),
-#             HTTP_AUTHORIZATION=f'Bearer {access_teken}'
-#         )
-#         print(response.data)
-#         self.assertEqual(response.status_code, 200)
-#         # self.assertEqual(response.data['email'], self.data['email'])
+    def test_get_user_data(self):
+        user = User.get_absolute_url(user_id=self.user.id)
+        access_teken = self.client.post(reverse('token_obtain_pair'), self.data).data['access']
+        response = self.client.get(
+            path=user,
+            HTTP_AUTHORIZATION=f'Bearer {access_teken}'
+        )
+        print(response.data)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data['email'], self.data['email'])
